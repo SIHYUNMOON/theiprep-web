@@ -42,12 +42,13 @@ export function LoginModal({ isOpen, onClose, onLogin, isLoading }: LoginModalPr
         isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
       }`}
     >
-      <div className="bg-white rounded-lg p-8 max-w-sm w-full shadow-lg">
+      <div className="bg-white rounded-lg p-8 max-w-sm w-full shadow-lg max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-2xl font-bold text-foreground">관리자 로그인</h2>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600"
+            className="text-gray-400 hover:text-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled={isLoading}
           >
             <X size={24} />
           </button>

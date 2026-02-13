@@ -95,6 +95,13 @@ export default function BoardingSchoolPage() {
     <>
       <style jsx global>{`
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap');
+        .programs-card {
+          transition: transform 0.25s cubic-bezier(0.4, 0.8, 0.2, 1), box-shadow 0.2s;
+        }
+        .programs-card:hover {
+          transform: translateY(-12px);
+          box-shadow: 0 8px 24px rgba(13,37,99,0.12);
+        }
       `}</style>
       <div className="min-h-screen flex flex-col">
         <Header />
@@ -143,7 +150,7 @@ export default function BoardingSchoolPage() {
 
               <div className="grid md:grid-cols-3 gap-8">
                 {/* Card 1 */}
-                <div className="fade-up bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+                <div className="fade-up bg-white rounded-lg shadow-sm overflow-hidden">
                   <div className="h-1 bg-[rgb(13,37,99)]" />
                   <div className="p-8">
                     <h3 className="text-2xl font-bold text-foreground mb-4">
@@ -156,7 +163,7 @@ export default function BoardingSchoolPage() {
                 </div>
 
                 {/* Card 2 */}
-                <div className="fade-up bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+                <div className="fade-up bg-white rounded-lg shadow-sm overflow-hidden">
                   <div className="h-1 bg-[rgb(13,37,99)]" />
                   <div className="p-8">
                     <h3 className="text-2xl font-bold text-foreground mb-4">
@@ -169,7 +176,7 @@ export default function BoardingSchoolPage() {
                 </div>
 
                 {/* Card 3 */}
-                <div className="fade-up bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+                <div className="fade-up bg-white rounded-lg shadow-sm overflow-hidden">
                   <div className="h-1 bg-[rgb(13,37,99)]" />
                   <div className="p-8">
                     <h3 className="text-2xl font-bold text-foreground mb-4">
@@ -192,7 +199,7 @@ export default function BoardingSchoolPage() {
               </h2>
               <div className="grid md:grid-cols-3 gap-8">
                 {/* Senior Boarding */}
-                <a href="/senior-boarding" className="fade-up bg-[#5a6a84] border-none hover:shadow-lg transition-shadow rounded-lg aspect-square flex flex-col p-8 cursor-pointer">
+                <a href="/senior-boarding" className="programs-card fade-up bg-[#5a6a84] border-none hover:shadow-lg transition-shadow rounded-lg aspect-square flex flex-col p-8 cursor-pointer">
                   <h3 className="text-2xl font-semibold text-white mb-4" style={{ fontFamily: '"Noto Sans KR", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', fontWeight: 500 }}>
                     명문 시니어 보딩 컨설팅
                   </h3>
@@ -224,7 +231,7 @@ export default function BoardingSchoolPage() {
                 </a>
 
                 {/* Junior Boarding */}
-                <a href="/junior-boarding" className="fade-up bg-[#3d5170] border-none hover:shadow-lg transition-shadow rounded-lg aspect-square flex flex-col p-8 cursor-pointer">
+                <a href="/junior-boarding" className="programs-card fade-up bg-[#3d5170] border-none hover:shadow-lg transition-shadow rounded-lg aspect-square flex flex-col p-8 cursor-pointer">
                   <h3 className="text-2xl font-semibold text-white mb-4" style={{ fontFamily: '"Noto Sans KR", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', fontWeight: 500 }}>
                     주니어 보딩 컨설팅
                   </h3>
@@ -248,7 +255,7 @@ export default function BoardingSchoolPage() {
                 </a>
 
                 {/* Advising */}
-                <div className="fade-up bg-[rgb(13,37,99)] border-none hover:shadow-lg transition-shadow rounded-lg aspect-square flex flex-col p-8">
+                <div className="programs-card fade-up bg-[rgb(13,37,99)] border-none hover:shadow-lg transition-shadow rounded-lg aspect-square flex flex-col p-8">
                   <h3 className="text-2xl font-semibold text-white mb-4" style={{ fontFamily: '"Noto Sans KR", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', fontWeight: 500 }}>
                     보딩스쿨 어드바이징 컨설팅
                   </h3>

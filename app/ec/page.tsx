@@ -4,9 +4,85 @@ import Image from 'next/image'
 import { AnimatedSection } from '@/components/animated-section'
 import { Header } from '@/components/header'
 
+import { useEffect } from 'react'
 export default function ECPage() {
+  useEffect(() => {
+    const form = document.getElementById('ec-contact-form') as HTMLFormElement
+    const messageDiv = document.getElementById('ec-form-message')
+
+    const handleSubmit = async (e: Event) => {
+      e.preventDefault()
+
+      const formData = new FormData(form)
+      const data = {
+        name: formData.get('name'),
+        phone: formData.get('phone'),
+        email: formData.get('email'),
+        grade: formData.get('grade'),
+        subject: formData.get('subject'),
+        question: formData.get('question'),
+      }
+
+      try {
+        const response = await fetch('/api/contact-boarding-school', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        })
+
+        const result = await response.json()
+
+        if (response.ok && messageDiv) {
+          messageDiv.textContent = result.message || '문의가 성공적으로 전송되었습니다. Thank you for contacting us!'
+          messageDiv.className = 'p-4 rounded-md bg-green-100 text-green-800 border border-green-300'
+          messageDiv.classList.remove('hidden')
+          form.reset()
+
+          setTimeout(() => {
+            messageDiv.classList.add('hidden')
+          }, 5000)
+        } else if (messageDiv) {
+          messageDiv.textContent = result.error || '오류가 발생했습니다. Please try again.'
+          messageDiv.className = 'p-4 rounded-md bg-red-100 text-red-800 border border-red-300'
+          messageDiv.classList.remove('hidden')
+        }
+      } catch (error) {
+        console.error('[v0] Form submission error:', error)
+        if (messageDiv) {
+          messageDiv.textContent = '오류가 발생했습니다. Please try again.'
+          messageDiv.className = 'p-4 rounded-md bg-red-100 text-red-800 border border-red-300'
+          messageDiv.classList.remove('hidden')
+        }
+      }
+    }
+
+    if (form) {
+      form.addEventListener('submit', handleSubmit)
+    }
+
+    return () => {
+      if (form) {
+        form.removeEventListener('submit', handleSubmit)
+      }
+    }
+  }, [])
+
   return (
-    <div className="min-h-screen flex flex-col">
+    <>
+      <style jsx global>{`
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap');
+        .programs-card {
+          transition: transform 0.25s cubic-bezier(0.4, 0.8, 0.2, 1), box-shadow 0.2s !important;
+          will-change: transform, box-shadow;
+        }
+        .programs-card:hover {
+          transform: translateY(-12px) !important;
+          box-shadow: 0 8px 24px rgba(13,37,99,0.12) !important;
+        }
+      `}</style>
+      <div className="min-h-screen flex flex-col">
       <Header />
 
       <main className="flex-1">
@@ -42,6 +118,7 @@ export default function ECPage() {
           </div>
         </AnimatedSection>
 
+
         {/* Programs Section */}
         <AnimatedSection className="py-24 px-6">
           <div className="container mx-auto max-w-6xl">
@@ -50,7 +127,7 @@ export default function ECPage() {
             </h2>
             <div className="grid md:grid-cols-3 gap-8">
               {/* 아카데믹 */}
-              <a href="/ec-academic" className="fade-up bg-[#5a6a84] border-none hover:shadow-lg transition-shadow rounded-lg aspect-square flex flex-col p-8 cursor-pointer block">
+              <a href="/ec-academic" className="programs-card fade-up bg-[#5a6a84] border-none transition-shadow rounded-lg aspect-square flex flex-col p-8 cursor-pointer block">
                 <h3 className="text-2xl font-semibold text-white mb-4" style={{ fontFamily: '"Noto Sans KR", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', fontWeight: 500 }}>
                   아카데믹
                 </h3>
@@ -73,7 +150,7 @@ export default function ECPage() {
               </a>
 
               {/* 미술 */}
-              <a href="/ec-art" className="fade-up bg-[#3d5170] border-none hover:shadow-lg transition-shadow rounded-lg aspect-square flex flex-col p-8 cursor-pointer block">
+              <a href="/ec-art" className="programs-card fade-up bg-[#3d5170] border-none transition-shadow rounded-lg aspect-square flex flex-col p-8 cursor-pointer block">
                 <h3 className="text-2xl font-semibold text-white mb-4" style={{ fontFamily: '"Noto Sans KR", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', fontWeight: 500 }}>
                   미술
                 </h3>
@@ -92,7 +169,7 @@ export default function ECPage() {
               </a>
 
               {/* KYND */}
-              <a href="/ec-kynd" className="fade-up bg-[rgb(13,37,99)] border-none hover:shadow-lg transition-shadow rounded-lg aspect-square flex flex-col p-8 cursor-pointer block">
+              <a href="/ec-kynd" className="programs-card fade-up bg-[rgb(13,37,99)] border-none rounded-lg aspect-square flex flex-col p-8 cursor-pointer block">
                 <h3 className="text-2xl font-semibold text-white mb-4" style={{ fontFamily: '"Noto Sans KR", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', fontWeight: 500 }}>
                   KYND
                 </h3>
@@ -183,6 +260,111 @@ export default function ECPage() {
         </AnimatedSection>
       </main>
 
+      {/* Contact Us Section */}
+      <AnimatedSection className="relative py-24 px-6">
+        <div className="absolute inset-0 z-0">
+          <Image
+            src="/images/pexels-pavel-danilyuk-8112186.jpg"
+            alt="Contact Us"
+            fill
+            className="object-cover"
+          />
+          <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
+        </div>
+        <div className="container mx-auto max-w-3xl relative z-10">
+          <h2 className="font-serif text-4xl md:text-5xl font-semibold text-white text-center mb-12 fade-up">
+            Contact Us
+          </h2>
+          <div className="fade-up bg-white/95 backdrop-blur-sm rounded-lg shadow-2xl p-8 md:p-12">
+            <form id="ec-contact-form" className="space-y-6">
+              <div className="grid md:grid-cols-2 gap-6">
+                <div>
+                  <label htmlFor="name" className="block text-sm font-semibold text-foreground mb-2">
+                    이름/Name *
+                  </label>
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    required
+                    className="w-full px-4 py-3 rounded-md border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="phone" className="block text-sm font-semibold text-foreground mb-2">
+                    연락처/Phone
+                  </label>
+                  <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    className="w-full px-4 py-3 rounded-md border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                  />
+                </div>
+              </div>
+              <div className="grid md:grid-cols-2 gap-6">
+                <div>
+                  <label htmlFor="email" className="block text-sm font-semibold text-foreground mb-2">
+                    이메일/Email *
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    required
+                    className="w-full px-4 py-3 rounded-md border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="grade" className="block text-sm font-semibold text-foreground mb-2">
+                    학년/Grade
+                  </label>
+                  <input
+                    type="text"
+                    id="grade"
+                    name="grade"
+                    className="w-full px-4 py-3 rounded-md border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                  />
+                </div>
+              </div>
+              <div>
+                <label htmlFor="subject" className="block text-sm font-semibold text-foreground mb-2">
+                  제목/Subject *
+                </label>
+                <input
+                  type="text"
+                  id="subject"
+                  name="subject"
+                  required
+                  className="w-full px-4 py-3 rounded-md border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                />
+              </div>
+              <div>
+                <label htmlFor="question" className="block text-sm font-semibold text-foreground mb-2">
+                  문의사항/Question *
+                </label>
+                <textarea
+                  id="question"
+                  name="question"
+                  required
+                  rows={6}
+                  className="w-full px-4 py-3 rounded-md border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all resize-none"
+                />
+              </div>
+              <div id="ec-form-message" className="hidden p-4 rounded-md"></div>
+              <div className="flex justify-end">
+                <button
+                  type="submit"
+                  className="px-8 py-3 bg-primary text-primary-foreground font-semibold rounded-md hover:bg-primary/90 transition-colors shadow-md hover:shadow-lg"
+                >
+                  Send
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </AnimatedSection>
+
       {/* Footer */}
       <footer className="py-12 px-6 bg-primary text-primary-foreground">
         <div className="container mx-auto max-w-7xl">
@@ -204,5 +386,6 @@ export default function ECPage() {
         </div>
       </footer>
     </div>
+    </>
   )
 }

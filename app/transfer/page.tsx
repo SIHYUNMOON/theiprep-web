@@ -27,9 +27,93 @@ export default function TransferPage() {
     return () => observer.disconnect()
   }, [])
 
+  useEffect(() => {
+    const form = document.getElementById('transfer-contact-form') as HTMLFormElement
+    const messageDiv = document.getElementById('transfer-form-message')
+
+    const handleSubmit = async (e: Event) => {
+      e.preventDefault()
+
+      const formData = new FormData(form)
+      const data = {
+        name: formData.get('name'),
+        phone: formData.get('phone'),
+        email: formData.get('email'),
+        grade: formData.get('grade'),
+        subject: formData.get('subject'),
+        question: formData.get('question'),
+      }
+
+      try {
+        const response = await fetch('/api/contact-boarding-school', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        })
+
+        const result = await response.json()
+
+        if (response.ok && messageDiv) {
+          messageDiv.textContent = result.message || '문의가 성공적으로 전송되었습니다. Thank you for contacting us!'
+          messageDiv.className = 'p-4 rounded-md bg-green-100 text-green-800 border border-green-300'
+          messageDiv.classList.remove('hidden')
+          form.reset()
+
+          setTimeout(() => {
+            messageDiv.classList.add('hidden')
+          }, 5000)
+        } else if (messageDiv) {
+          messageDiv.textContent = result.error || '오류가 발생했습니다. Please try again.'
+          messageDiv.className = 'p-4 rounded-md bg-red-100 text-red-800 border border-red-300'
+          messageDiv.classList.remove('hidden')
+        }
+      } catch (error) {
+        console.error('[v0] Form submission error:', error)
+        if (messageDiv) {
+          messageDiv.textContent = '오류가 발생했습니다. Please try again.'
+          messageDiv.className = 'p-4 rounded-md bg-red-100 text-red-800 border border-red-300'
+          messageDiv.classList.remove('hidden')
+        }
+      }
+    }
+
+    if (form) {
+      form.addEventListener('submit', handleSubmit)
+    }
+
+    return () => {
+      if (form) {
+        form.removeEventListener('submit', handleSubmit)
+      }
+    }
+  }, [])
+
   return (
-    <div className="flex flex-col min-h-screen">
-      <Header />
+    <>
+      <style jsx global>{`
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap');
+        .programs-card {
+          transition: transform 0.25s cubic-bezier(0.4, 0.8, 0.2, 1), box-shadow 0.2s !important;
+          will-change: transform, box-shadow;
+        }
+        .programs-card:hover {
+          transform: translateY(-12px) !important;
+          box-shadow: 0 8px 24px rgba(13,37,99,0.12) !important;
+        }
+        .fade-up {
+          opacity: 0;
+          transform: translateY(30px);
+          transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-up.fade-up-active {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      `}</style>
+      <div className="flex flex-col min-h-screen">
+        <Header />
 
       <main className="flex-1">
         {/* Hero Section */}
@@ -114,6 +198,7 @@ export default function TransferPage() {
           </div>
         </section>
 
+
         {/* Programs Section */}
         <section className="py-24 px-6 bg-white">
           <div className="container mx-auto max-w-5xl">
@@ -122,7 +207,7 @@ export default function TransferPage() {
             </h2>
             <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
               {/* Program 1 */}
-              <a href="/transfer-application" className="fade-up bg-gradient-to-br from-[#5a6a84] to-[#3d5170] border-none hover:shadow-lg transition-all hover:scale-105 rounded-lg p-8 text-white block cursor-pointer">
+              <a href="/transfer-application" className="programs-card fade-up bg-gradient-to-br from-[#5a6a84] to-[#3d5170] border-none rounded-lg p-8 text-white block cursor-pointer">
                 <h3 className="text-2xl font-semibold mb-6" style={{ fontFamily: '"Noto Sans KR", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', fontWeight: 500 }}>
                   원서 컨설팅
                 </h3>
@@ -148,7 +233,7 @@ export default function TransferPage() {
               </a>
 
               {/* Program 2 */}
-              <a href="/transfer-essay" className="fade-up bg-gradient-to-br from-[#3d5170] to-[#2c3e5a] border-none hover:shadow-lg transition-all hover:scale-105 rounded-lg p-8 text-white block cursor-pointer">
+              <a href="/transfer-essay" className="programs-card fade-up bg-gradient-to-br from-[#3d5170] to-[#2c3e5a] border-none rounded-lg p-8 text-white block cursor-pointer">
                 <h3 className="text-2xl font-semibold mb-6" style={{ fontFamily: '"Noto Sans KR", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', fontWeight: 500 }}>
                   에세이 컨설팅
                 </h3>
@@ -173,6 +258,111 @@ export default function TransferPage() {
         </section>
       </main>
 
+      {/* Contact Us Section */}
+      <AnimatedSection className="relative py-24 px-6">
+        <div className="absolute inset-0 z-0">
+          <Image
+            src="/images/pexels-pavel-danilyuk-8112186.jpg"
+            alt="Contact Us"
+            fill
+            className="object-cover"
+          />
+          <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
+        </div>
+        <div className="container mx-auto max-w-3xl relative z-10">
+          <h2 className="font-serif text-4xl md:text-5xl font-semibold text-white text-center mb-12 fade-up">
+            Contact Us
+          </h2>
+          <div className="fade-up bg-white/95 backdrop-blur-sm rounded-lg shadow-2xl p-8 md:p-12">
+            <form id="transfer-contact-form" className="space-y-6">
+              <div className="grid md:grid-cols-2 gap-6">
+                <div>
+                  <label htmlFor="name" className="block text-sm font-semibold text-foreground mb-2">
+                    이름/Name *
+                  </label>
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    required
+                    className="w-full px-4 py-3 rounded-md border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="phone" className="block text-sm font-semibold text-foreground mb-2">
+                    연락처/Phone
+                  </label>
+                  <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    className="w-full px-4 py-3 rounded-md border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                  />
+                </div>
+              </div>
+              <div className="grid md:grid-cols-2 gap-6">
+                <div>
+                  <label htmlFor="email" className="block text-sm font-semibold text-foreground mb-2">
+                    이메일/Email *
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    required
+                    className="w-full px-4 py-3 rounded-md border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="grade" className="block text-sm font-semibold text-foreground mb-2">
+                    학년/Grade
+                  </label>
+                  <input
+                    type="text"
+                    id="grade"
+                    name="grade"
+                    className="w-full px-4 py-3 rounded-md border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                  />
+                </div>
+              </div>
+              <div>
+                <label htmlFor="subject" className="block text-sm font-semibold text-foreground mb-2">
+                  제목/Subject *
+                </label>
+                <input
+                  type="text"
+                  id="subject"
+                  name="subject"
+                  required
+                  className="w-full px-4 py-3 rounded-md border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                />
+              </div>
+              <div>
+                <label htmlFor="question" className="block text-sm font-semibold text-foreground mb-2">
+                  문의사항/Question *
+                </label>
+                <textarea
+                  id="question"
+                  name="question"
+                  required
+                  rows={6}
+                  className="w-full px-4 py-3 rounded-md border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all resize-none"
+                />
+              </div>
+              <div id="transfer-form-message" className="hidden p-4 rounded-md"></div>
+              <div className="flex justify-end">
+                <button
+                  type="submit"
+                  className="px-8 py-3 bg-primary text-primary-foreground font-semibold rounded-md hover:bg-primary/90 transition-colors shadow-md hover:shadow-lg"
+                >
+                  Send
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </AnimatedSection>
+
       {/* Footer */}
       <footer className="py-12 px-6 bg-primary text-primary-foreground">
         <div className="container mx-auto max-w-7xl">
@@ -193,18 +383,7 @@ export default function TransferPage() {
           </div>
         </div>
       </footer>
-
-      <style jsx>{`
-        .fade-up {
-          opacity: 0;
-          transform: translateY(30px);
-          transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-        }
-        .fade-up.fade-up-active {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      `}</style>
-    </div>
+      </div>
+    </>
   )
 }

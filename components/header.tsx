@@ -8,7 +8,7 @@ import { useAuth } from '@/lib/auth-context'
 
 export function Header() {
   const [showBoardLogin, setShowBoardLogin] = useState(false)
-  const { isAdminLoggedIn, logout, isLoading } = useAuth()
+  const { isAdminLoggedIn, logout, login, isLoading } = useAuth()
 
   const handleBoardLogout = async () => {
     try {
@@ -18,6 +18,16 @@ export function Header() {
       }
     } catch (error) {
       console.error('[v0] Logout error:', error)
+    }
+  }
+
+  const handleLogin = async (username: string, password: string) => {
+    try {
+      await login(username, password)
+      setShowBoardLogin(false)
+    } catch (error) {
+      console.error('[v0] Login error:', error)
+      throw error
     }
   }
 
@@ -102,7 +112,9 @@ export function Header() {
       </header>
       <LoginModal 
         isOpen={showBoardLogin} 
-        onClose={() => setShowBoardLogin(false)} 
+        onClose={() => setShowBoardLogin(false)}
+        onLogin={handleLogin}
+        isLoading={isLoading}
       />
     </>
   )
