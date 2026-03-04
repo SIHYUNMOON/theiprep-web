@@ -71,25 +71,6 @@ export default function ConsultantsPage() {
                 </div>
               </div>
 
-              {/* Joe Shim */}
-              <div className="fade-up border border-border rounded-lg p-6 bg-white hover:shadow-md transition-shadow">
-                <div className="w-16 h-1 bg-[rgb(13,37,99)] mb-4" />
-                <h3 className="text-2xl font-bold text-foreground mb-4">Joe Shim</h3>
-                <div className="h-px bg-border mb-3" />
-                <div className="mb-4">
-                  <p className="text-sm text-foreground leading-relaxed">
-                    <span className="font-medium text-muted-foreground">과목 : </span>Consulting / College Essay / Competitions
-                  </p>
-                </div>
-                <div className="h-px bg-border mb-3" />
-                <div>
-                  <p className="text-sm font-medium text-muted-foreground mb-2">주요경력</p>
-                  <div className="space-y-0.5">
-                    <p className="text-sm text-foreground leading-snug">Harvard University, BA (Economics)</p>
-                  </div>
-                </div>
-              </div>
-
               {/* Grace */}
               <div className="fade-up border border-border rounded-lg p-6 bg-white hover:shadow-md transition-shadow">
                 <div className="w-16 h-1 bg-[rgb(13,37,99)] mb-4" />
