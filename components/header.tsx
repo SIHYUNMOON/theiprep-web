@@ -47,7 +47,7 @@ export function Header() {
           <div className="flex items-center justify-between">
             <a href="/" className="flex items-center gap-3">
               <img
-                src="/images/그림2.png"
+                src="/images/thei-logo.png"
                 alt="The-I Prep Logo"
                 className="h-10 w-auto"
               />
