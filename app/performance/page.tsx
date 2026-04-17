@@ -126,12 +126,12 @@ export default function AdmissionResultsPage() {
                   {/* 핵심 수치 3개 카드 */}
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                     <div className="bg-white p-6 rounded-lg shadow-sm text-center">
-                      <div className="text-4xl font-bold text-[rgb(13,37,99)] mb-2">13명</div>
+                      <div className="text-4xl font-bold text-[rgb(13,37,99)] mb-2">14명</div>
                       <div className="text-sm text-muted-foreground">미국 TOP15 합격</div>
                       <div className="text-xs text-muted-foreground mt-1">중복합격 없음</div>
                     </div>
                     <div className="bg-white p-6 rounded-lg shadow-sm text-center">
-                      <div className="text-4xl font-bold text-[rgb(13,37,99)] mb-2">8명</div>
+                      <div className="text-4xl font-bold text-[rgb(13,37,99)] mb-2">9명</div>
                       <div className="text-sm text-muted-foreground">아이비리그 플러스 합격자</div>
                     </div>
                     <div className="bg-white p-6 rounded-lg shadow-sm text-center">
@@ -165,6 +165,7 @@ export default function AdmissionResultsPage() {
                         'Vanderbilt (1명)',
                         'UC Berkeley (1명)',
                         'UCLA (2명)',
+                        'university of pennsylvania (1명)'
                       ].map((school, idx) => (
                         <div key={idx} className="flex items-center gap-2">
                           <span className="text-[rgb(13,37,99)]">•</span>
@@ -183,7 +184,7 @@ export default function AdmissionResultsPage() {
                         'University of Virginia (2명)',
                         'Georgetown (1명)',
                         'UNC Chapel Hill (1명)',
-                        'Washington University in St. Louis (2명)',
+                        'Washington University in St. Louis (3명)',
                         'University of Southern California (1명)',
                         'Georgia Tech (2명)',
                         'New York University (3명)',
