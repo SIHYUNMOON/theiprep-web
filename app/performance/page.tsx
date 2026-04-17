@@ -195,6 +195,7 @@ export default function AdmissionResultsPage() {
                         'UCSD (4명)',
                         'UC Davis (2명)',
                         'University of Texas at Austin (1명)',
+                        'Carnegie Mellon University (1명)',
                       ].map((school, idx) => (
                         <div key={idx} className="flex items-center gap-2">
                           <span className="text-[rgb(13,37,99)]">•</span>
