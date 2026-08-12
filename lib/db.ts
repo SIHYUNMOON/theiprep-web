@@ -446,6 +446,47 @@ export async function likePost(id: string) {
   }
 }
 
+export interface SitemapPost {
+  id: string;
+  created_at: string;
+  updated_at: string;
+}
+
+/**
+ * Lightweight query used only for sitemap generation.
+ * Returns every publicly indexable (published, non-deleted) post
+ * with just the fields needed to build a <url> entry: id + timestamps.
+ */
+export async function getPublicPostsForSitemap(): Promise<DbResult<SitemapPost[]>> {
+  if (!process.env.DATABASE_URL) {
+    console.error('[sitemap] db fetch failed:', { error: 'DATABASE_URL not defined' });
+    return { ok: false, error: 'db_unavailable' } as const;
+  }
+
+  if (shouldSimulateDbFailure()) {
+    console.error('[sitemap] db fetch failed:', { error: 'SIMULATE_DB_FAIL enabled' });
+    return { ok: false, error: 'db_unavailable' } as const;
+  }
+
+  try {
+    await initializeDatabase();
+    const sql = getDb();
+
+    // Only published posts are publicly indexable.
+    const result = await sql`
+      SELECT id, created_at, updated_at FROM posts
+      WHERE published = true
+      ORDER BY created_at DESC
+    `;
+
+    return { ok: true, data: result as SitemapPost[] } as const;
+  } catch (error) {
+    const errorMsg = error instanceof Error ? error.message : String(error);
+    console.error('[sitemap] db fetch failed:', { error: errorMsg });
+    return { ok: false, error: 'db_unavailable' } as const;
+  }
+}
+
 export async function getCategories(): Promise<DbResult<string[]>> {
   // Check if DATABASE_URL is defined
   if (!process.env.DATABASE_URL) {

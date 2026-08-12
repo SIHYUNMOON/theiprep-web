@@ -5,8 +5,11 @@ import Link from 'next/link'
 export const dynamic = 'force-dynamic'
 export const runtime = 'nodejs'
 export const metadata = {
-  title: '입시 관련 정보 게시판 | 디아이프렙',
-  description: '디아이프렙 입시 관련 정보 게시판, 대학 입시 정보, 전략 등을 확인하세요.',
+  title: '미국 입시 가이드·정보 | 디아이프렙 The I Prep',
+  description: '디아이프렙이 제공하는 미국 대학·보딩스쿨 입시 가이드와 최신 정보, 합격 전략을 담은 정보 게시판입니다.',
+  alternates: {
+    canonical: '/board',
+  },
 }
 
 export const revalidate = 60 // Revalidate every 60 seconds
