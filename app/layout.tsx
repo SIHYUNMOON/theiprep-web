@@ -21,8 +21,8 @@ const playfair = Playfair_Display({
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: 'The-I Prep - Premier College Consulting Academy',
-  description: 'Expert college consulting services for boarding school, university, transfer, graduate school, and EC consulting. Proven track record of Ivy League admissions success.',
+  title: '디아이프렙 The I Prep | 미국 대학·보딩스쿨 입시 컨설팅',
+  description: '미국 대학, 보딩스쿨, 편입, 대학원, EC 컨설팅까지 제공하는 디아이프렙의 입시 컨설팅 서비스를 소개합니다.',
   generator: 'v0.app',
   alternates: {
     canonical: '/',

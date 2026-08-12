@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { PostViewClient } from './client'
 import { getPostById } from '@/lib/db'
+import { SITE_URL } from '@/lib/site-config'
 
 export const runtime = 'nodejs'
 
@@ -45,10 +46,13 @@ export async function generateMetadata({
   return {
     title: post.title,
     description: textContent,
+    alternates: {
+      canonical: `/board/${id}`,
+    },
     openGraph: {
       title: post.title,
       description: textContent,
-      url: `https://interprep.academy/board/${id}`,
+      url: `${SITE_URL}/board/${id}`,
     },
   }
 }
