@@ -1,6 +1,13 @@
 import { BoardClient } from './client'
 import { getPosts } from '@/lib/db'
 import Link from 'next/link'
+import { JsonLd } from '@/components/json-ld'
+import { buildBreadcrumbSchema } from '@/lib/structured-data'
+
+const breadcrumb = buildBreadcrumbSchema([
+  { name: 'Home', path: '/' },
+  { name: '입시 가이드·정보', path: '/board' },
+])
 
 export const dynamic = 'force-dynamic'
 export const runtime = 'nodejs'
@@ -49,6 +56,7 @@ export default async function BoardPage() {
 
   return (
     <>
+      <JsonLd data={breadcrumb} />
       {/* Server-rendered fallback for no-JS environments */}
       <noscript>
         <div className="min-h-screen bg-white">
