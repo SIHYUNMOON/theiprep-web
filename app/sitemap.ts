@@ -43,10 +43,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   if (result.ok) {
     postEntries = result.data.map((post) => {
-      // Prefer updated_at, fall back to created_at. Only set lastModified
-      // when a valid timestamp actually exists — never invent one.
-      const rawDate = post.updated_at || post.created_at
-      const parsed = rawDate ? new Date(rawDate) : null
+      // Use created_at only. It is the same field the board detail page
+      // renders as the article's publication date (see app/board/[id]/client.tsx),
+      // and for imported content it was explicitly backdated to the true
+      // original publish date via the customDate param in createPost/updatePost.
+      //
+      // updated_at is intentionally NOT used: for the vast majority of posts
+      // it is clustered on the two days content was bulk-imported into this
+      // database, not a genuine later edit to that article's content — so it
+      // cannot be trusted as a modification date.
+      const parsed = post.created_at ? new Date(post.created_at) : null
       const lastModified =
         parsed && !Number.isNaN(parsed.getTime()) ? parsed : undefined
 
