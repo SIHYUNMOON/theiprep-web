@@ -449,13 +449,22 @@ export async function likePost(id: string) {
 export interface SitemapPost {
   id: string;
   created_at: string;
-  updated_at: string;
 }
 
 /**
  * Lightweight query used only for sitemap generation.
  * Returns every publicly indexable (published, non-deleted) post
- * with just the fields needed to build a <url> entry: id + timestamps.
+ * with just the fields needed to build a <url> entry: id + created_at.
+ *
+ * created_at is the same field the board detail page displays as the
+ * article's publication date (see app/board/[id]/client.tsx), and for
+ * imported content it was explicitly backdated to the true original
+ * publish date via the customDate param in createPost/updatePost.
+ *
+ * updated_at is intentionally excluded here: for existing posts it is
+ * clustered on the two days content was bulk-imported into this database,
+ * not a genuine later edit to that article, so it is not a trustworthy
+ * lastModified source.
  */
 export async function getPublicPostsForSitemap(): Promise<DbResult<SitemapPost[]>> {
   if (!process.env.DATABASE_URL) {
@@ -474,7 +483,7 @@ export async function getPublicPostsForSitemap(): Promise<DbResult<SitemapPost[]
 
     // Only published posts are publicly indexable.
     const result = await sql`
-      SELECT id, created_at, updated_at FROM posts
+      SELECT id, created_at FROM posts
       WHERE published = true
       ORDER BY created_at DESC
     `;
