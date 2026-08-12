@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
 import type { ReactNode } from 'react'
+import { JsonLd } from '@/components/json-ld'
+import { buildBreadcrumbSchema } from '@/lib/structured-data'
 
 export const metadata: Metadata = {
   title: '미국 대학원 입시 컨설팅 | 디아이프렙 The I Prep',
@@ -9,6 +11,16 @@ export const metadata: Metadata = {
   },
 }
 
+const breadcrumb = buildBreadcrumbSchema([
+  { name: 'Home', path: '/' },
+  { name: '대학원 컨설팅', path: '/graduate' },
+])
+
 export default function Layout({ children }: { children: ReactNode }) {
-  return children
+  return (
+    <>
+      <JsonLd data={breadcrumb} />
+      {children}
+    </>
+  )
 }

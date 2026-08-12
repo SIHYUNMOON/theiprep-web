@@ -5,6 +5,8 @@ import { Inter, Playfair_Display } from 'next/font/google'
 import './globals.css'
 import Providers from './providers'
 import { SITE_URL } from '@/lib/site-config'
+import { buildSiteGraph } from '@/lib/structured-data'
+import { JsonLd } from '@/components/json-ld'
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -37,6 +39,7 @@ export default function RootLayout({
   return (
     <html lang="ko" className={`${inter.variable} ${playfair.variable}`}>
       <body className="font-sans antialiased">
+        <JsonLd data={buildSiteGraph()} />
         <Providers>{children}</Providers>
       </body>
     </html>
