@@ -4,6 +4,7 @@ import { Inter, Playfair_Display } from 'next/font/google'
 
 import './globals.css'
 import Providers from './providers'
+import { SITE_URL } from '@/lib/site-config'
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -19,9 +20,13 @@ const playfair = Playfair_Display({
 })
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: 'The-I Prep - Premier College Consulting Academy',
   description: 'Expert college consulting services for boarding school, university, transfer, graduate school, and EC consulting. Proven track record of Ivy League admissions success.',
   generator: 'v0.app',
+  alternates: {
+    canonical: '/',
+  },
 }
 
 export default function RootLayout({
